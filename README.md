@@ -1,2 +1,3 @@
-# LearningEveryDay
-每天学习打卡
+![](background.png)
+
+---
