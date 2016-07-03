@@ -4,6 +4,7 @@
 
 ## 2016-07-03
 
+
 ### Today's leetcode
 
 [342. Power of Four](https://leetcode.com/problems/power-of-four/)
@@ -38,7 +39,27 @@ public:
 * anchorPoint
   * The *anchorPoint* as being the handle used to move the layer around
   * The *anchorPoint* is specified in *unit coordinateds*
-* 
+* Coordinate System
+  * `CALayer` provides some utility methods for converting between different layers' coordinate systems:
+    * `- (CGPoint)convertPoint:(CGPoint)point toView:(UIView *)view;`
+    * `- (CGPoint)convertPoint:(CGPoint)point fromView:(UIView *)view;`
+    * `- (CGRect)convertRect:(CGRect)rect toView:(UIView *)view;`
+    * `- (CGRect)convertRect:(CGRect)rect fromView:(UIView *)view;`
+  * Flipped Geometry
+  * The Z Axis
+    * Change the *display order* of your layers
+* Hit Testing
+  * `-containsPoint:`
+    * Accepts a `CGPoint` in the layer's own coordinate system, and return `YES` if the point lies inside the layer's `frame`
+  * `-hitTest:`
+    * It returns ether the layer itself or the deepest sublayer containing the point.(BOOL)
+    * The order of testing is based strivtly on the order of layers within the layer tree.
+* Automatic Layout
+    
+
+- [x]Finish iOS Core Animation: Advanced Techniques
+
+
 
 ### Reading *iOS开发进阶* 
 
