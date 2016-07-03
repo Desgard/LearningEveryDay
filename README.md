@@ -33,8 +33,14 @@ public:
   * The **center** and **position** both represent the location of the **anchorPoint** relative to the superlayer
   * Frame is a virtual property, computed from the bounds, positon, and transform, and therefore changes when any of those properties are modified.
   * The frame width and height may no longer match the bounds.
+* anchorPoint
+  * The *anchorPoint* as being the handle used to move the layer around
+  * The *anchorPoint* is specified in *unit coordinateds*
+* 
 
-### Reading *iOS开发进阶* 『Page 85』
+### Reading *iOS开发进阶* 
+
+#### 『Page 85』
 
 ```Objective-C
 - (BOOL)application: (UIApplication *)application didFinishLauningWithOptions: (NSDictionary *)launchOptions {
@@ -50,4 +56,29 @@ public:
 
 因为当最后一次执行`release`时，系统知道马上就要回收内存了，就没有必要再将`retainCount`减1了，因为无论减不减1，改对象都肯定会被回收，而对象被回收后，它的所有内存区域包括`retainCount`值也编的没有意义。不将这个值从1变回0，**可以减少一次内存的操作，加速对象的回收**。
 
+#### 『Page 92』
 
+> 在ARC模式下，维护引用计数的问题会体现在什么地方？
+
+书中明确指明，不要盲目的依赖于`ARC`机制。因为在与底层*Core Foundation*对象交互的时候，底层的*Core Foundation*对象由于不在`ARC`的管理下，所以需要自己维护这些对象的引用计数。另外，在过渡使用*block*时，也会出现关于循环引用的问题。
+
+对于*Core Foundation*对象，只需要延续以前手工管理引用计数的办法即可。例如：
+
+```Objective-C
+// 创建一个CTFontRef对象
+CTFontRef fontRef = CTFontCreateWithName((CGStringRef)@"ArialMT", fontSize, NULL);
+
+// 引用计数+1
+CFRetain(fontRef);
+// 引用计数-1
+CFRelease(fontRef);
+```
+
+另外在ARC下，有时候需要将一个*Core Foundation*对象转换成一个*Objective-C*对象，这个时候我们需要告诉编译器，转换过程中的引用计数需要如何调整。这就引入了与`bridge`相关的关键字，以下为说明：
+
+* __bridge: 只做类型转换，不修改相关对象的引用计数，原来的*Core Foundation*对象在不用时，需要调用`CFRelease`方法。
+* __bridge_retain-e: 类型转换后，将相关对象的引用计数+1，原来的*Core Foundation*对象不用时，需要调用`CFRelease`方法。
+* __bridge_transfer: 类型转换后，将该对象的引用计数交给ARC管理，*Core Foundation*对象在不用时，不再需要调用`CFRelease`方法。
+
+
+ - [x] 已完成 **Reading *iOS开发进阶***
