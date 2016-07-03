@@ -25,6 +25,7 @@ public:
 };
 ```
 
+- [x]已完成 **Today's leetcode**
 
 ### Reading *iOS Core Animation: Advanced Techniques*
 * Layout
@@ -81,4 +82,4 @@ CFRelease(fontRef);
 * __bridge_transfer: 类型转换后，将该对象的引用计数交给ARC管理，*Core Foundation*对象在不用时，不再需要调用`CFRelease`方法。
 
 
- - [x] 已完成 **Reading *iOS开发进阶***
+ - [x] 已完成 **Reading iOS开发进阶**
