@@ -57,7 +57,7 @@ public:
 * Automatic Layout
     
 
-- [x]Finish iOS Core Animation: Advanced Techniques
+- [x] Finish iOS Core Animation: Advanced Techniques
 
 
 
