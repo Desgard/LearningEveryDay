@@ -50,7 +50,7 @@ public:
 * Rounded Corners
   * [离屏渲染机制](https://www.objc.io/issues/3-views/moving-pixels-onto-the-screen/)
   * A floating-point number that defines the stroke thickness in points.
-  * Retained `CGColorRef ` properties must be declared using `addign`
+  * Retained `CGColorRef ` properties must be declared using `assign`
 
 
 - [x] Finish iOS Core Animation: Advanced Techniques
