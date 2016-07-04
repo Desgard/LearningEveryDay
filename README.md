@@ -45,11 +45,24 @@ public:
 
 ### Reading *iOS Core Animation: Advanced Techniques*
 
+#### Visual Effects
 
-- [ ] Finish iOS Core Animation: Advanced Techniques
+* Rounded Corners
+  * [离屏渲染机制](https://www.objc.io/issues/3-views/moving-pixels-onto-the-screen/)
+  * A floating-point number that defines the stroke thickness in points.
+  * Retained `CGColorRef ` properties must be declared using `addign`
+
+
+- [x] Finish iOS Core Animation: Advanced Techniques
 
 
 ### Reading *iOS开发进阶* 
 
+读到『Page 117』，无收获。
 
-- [ ] 已完成 **Reading iOS开发进阶**
+- [x] 已完成 **Reading iOS开发进阶**
+
+### Reading Blog Post
+
+[POP介绍与使用实践(快速上手动画)](http://adad184.com/2015/03/11/intro-to-pop/)
+
