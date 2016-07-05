@@ -53,4 +53,14 @@ public:
 
 ### Reading *iOS开发进阶* 
 
-- [ ] 已完成 **Reading iOS开发进阶**
+#### 『Page 127』
+
+> 如何做到Objective-C和JavaScript相互调用？
+
+A: *Objective-C*语言调用*JavaScript*，是通过`UIWebView`的`- (NSString *)stringByEvaluationgJavaScriptFromString: (NSString *)script;`方法实现的。改方法向`UIWebView`传递一段需要执行的*JavaScript*文件，最后获得执行结果。
+
+*JavaScript*调用*Objective-C*，无法利用现成的API直接调用，可以间接达到调用效果。改方法利用`UIWebView`的特性：在`UIWebView`内发起的所有网络请求，都可以通过`delegate`函数在原生界面上得到通知。这样我们在`UIWebView`内发起一个特殊的网络请求。
+
+互调开源库（待追读源码）：[WebViewJavascriptBridge](https://github.com/marcuswestin/WebViewJavascriptBridge)
+
+- [x] 已完成 **Reading iOS开发进阶**
