@@ -3,38 +3,49 @@
 ---
 
 
-## 2016-07-06
+## 2016-07-10
 
 ### Today's leetcode
 
-[128. Longest Consecutive Sequence](https://leetcode.com/problems/longest-consecutive-sequence/)
+这几天刚到上海，忙着租房诸多问题，所以暂停了好几天的学习任务。自己也有些愧疚。今天开始恢复学习状态。
 
-在一个无序数组中，查找最长连续数字串的长度。
+[153. Find Minimum in Rotated Sorted Array](https://leetcode.com/problems/find-minimum-in-rotated-sorted-array/)
+[154. Find Minimum in Rotated Sorted Array II](https://leetcode.com/problems/find-minimum-in-rotated-sorted-array-ii/)
 
-考虑`HashMap`。在第一圈遍历后标记所有数。在第二次遍历后，只需一次最大查询即可完成。思考一下这样问什么能保证效率。倘若数组全部连续，则需要`O(3n)`，倘若有一断点，复杂度为`O(n) + O(n) + O(n - 1) = O(3n - 1) = O(n)`，有两个断点`O(n) + O(n) + O(n - 2) = O(3n - 2) = O(n)`。试想，我们只是在标记非断点数后，继续对其做了一个`O(n)`的遍历处理，而断点越多只会减少复杂度。所以综上复杂度为`O(n)`
+发现了两道同样描述的题，只不过第二题的数据要考虑相同的情况，属于加强数据，那么我们直接来考虑第二题就好了。
 
-另外，通过`HashMap`查询，才能达到以上推导复杂度数。
+题目大意：对于一个有序数组的翻转数组，我们需要查找当中的最小值是多少。
+
+由于数组是部分有序的，我们可以二分最小值。而二分端界的转换可以通过比较`mid`和`left`、`right`的大小关系来重新确定。具体做法是，**根据比较`mid`值和`right`值来判断右端子数组是否已经排序**。
+
+* 情况一 :** 6** 7 0 **1** 2 4 **5**
+
+此时是`nums[mid] < nums[r]`的情况，说明右边数组是已经排序好的，即排除子数组[1, 2, 3, 4]，剩余[6, 7, 0]。此时修改`mid = r`，重新定义二分范围。
+
+* 情况二：**2** 4 5 **6** 7 0 **1**
+
+此时是`nums[mid] > nums[r]`情况。说明最小值此时已经出现在右边数组内。由于`nums[mid]`肯定不是最小值，所以我们从`nums[mid + 1]`作为新的二分数组右值。
+
+* 情况三：** 3 ** 3 3 ** 3 ** 1 2 ** 3 **
+
+此时是`nums[mid] = nums[r]`的情况。这时，我们所需要做的处理是单一缩小范围，让二分边界变为`[l, ..., r - 1]`。
+
+给出代码：
 
 ```cpp
 class Solution {
 public:
-    int longestConsecutive(vector<int>& nums) {
-        unordered_map<int, bool> hash;
-        for (int i = 0; i < nums.size(); i++) hash[nums[i]] = true;
-        int res = 0;
-        for (int i = 0; i < nums.size(); i++) {
-            int r = nums[i];
-            while (hash.find(r) != hash.end()) hash.erase(r ++);
-            int l = nums[i] - 1;
-            while (hash.find(l) != hash.end()) hash.erase(l --);
-            res = max(res, r - l - 1);
+    int findMin(vector<int>& nums) {
+        int l = 0, r = nums.size() - 1;
+        while(l < r) {
+            int mid = l + (r - l) / 2;
+            if(nums[mid] < nums[r]) r = mid;
+            else if(nums[mid] > nums[r]) l = mid + 1;
+            else r --;
         }
-        return res;
+        return nums[l];
     }
 };
 ```
 
 - [x] 已完成 **Today's leetcode**
-
-
-# 专业课考试，书籍停读一天。
