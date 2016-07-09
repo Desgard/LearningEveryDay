@@ -10,6 +10,7 @@
 这几天刚到上海，忙着租房诸多问题，所以暂停了好几天的学习任务。自己也有些愧疚。今天开始恢复学习状态。
 
 [153. Find Minimum in Rotated Sorted Array](https://leetcode.com/problems/find-minimum-in-rotated-sorted-array/)
+
 [154. Find Minimum in Rotated Sorted Array II](https://leetcode.com/problems/find-minimum-in-rotated-sorted-array-ii/)
 
 发现了两道同样描述的题，只不过第二题的数据要考虑相同的情况，属于加强数据，那么我们直接来考虑第二题就好了。
