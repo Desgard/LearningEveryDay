@@ -3,35 +3,55 @@
 ---
 
 
-## 2016-07-14
+## 2016-07-15
 
 ### Today's leetcode
 
-[328. Odd Even Linked List](https://leetcode.com/problems/odd-even-linked-list/)
+[299. Bulls and Cows](https://leetcode.com/problems/bulls-and-cows/)
 
-将一个链表按照奇偶顺序组织成链表。只要做两个指针就可以了。没有难度。
+经典的猜数字游戏。
+
+假设你正在玩猜数字游戏（Bulls and Cows）：你写出4个数字让你的朋友猜，每次你的朋友猜一个数字，你给出一条线索，这个线索告诉你的朋友，有多少个数字位置是正确的（被称为Bulls），有多少个数字位置是不正确的（被称为Cows），你的朋友需要根据这些线索最终猜出正确的数字。
+
+例如，给出的数字是1807，你的朋友猜的是7810，这里用A代表Bulls，B代表Cows，则给出的线索是1A3B。
+
+题目中给出的secret（被猜测数字）和guess（猜测的数字）长度一定是一样的。
+
+个人思路：要注意一个问题，就是出现数字出现的总个数统计。这是一个坑，其他没有别的，注意写代码就可以。
+
+ps. 虽然A掉了，但是觉得这次代码很丑。
 
 ```cpp
-/**
- * Definition for singly-linked list.
- * struct ListNode {
- *     int val;
- *     ListNode *next;
- *     ListNode(int x) : val(x), next(NULL) {}
- * };
- */
 class Solution {
 public:
-    ListNode* oddEvenList(ListNode* head) {
-        if (!head) return head;
-        ListNode *odd = head, *eve = head -> next, *eveHead = eve;
-        while (odd -> next && eve -> next) {
-            odd -> next = eve -> next;
-            odd = odd -> next;
-            eve -> next = odd -> next;
-            eve = eve -> next;
+    int num[20];
+    bool vis[1000001];
+    string getHint(string secret, string guess) {
+        memset(num, 0, sizeof(num));
+        memset(vis, 0, sizeof (vis));
+        for (int i = 0; i < secret.size(); ++ i) {
+            num[secret[i] - '0'] ++;
         }
-        odd -> next = eveHead;
-        return head;
+        int A = 0, B = 0;
+        for (int i = 0; i < guess.size(); ++ i) {
+            if (secret[i] == guess[i]) {
+                A ++;
+                num[guess[i] - '0'] --;
+                vis[i] = 1;
+            }
+        }
+
+        for (int i = 0; i < guess.size(); ++ i) {
+            if (vis[i]) continue;
+            if (num[guess[i] - '0'] > 0) {
+                B ++;
+                num[guess[i] - '0'] --;
+            }
+        }
+        string As = std :: to_string(A);
+        string Bs = std :: to_string(B);
+
+        return As + 'A' + Bs + 'B';
     }
 };
+```
