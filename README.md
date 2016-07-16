@@ -3,55 +3,36 @@
 ---
 
 
-## 2016-07-15
+## 2016-07-16
 
 ### Today's leetcode
 
-[299. Bulls and Cows](https://leetcode.com/problems/bulls-and-cows/)
+[60. Permutation Sequence](https://leetcode.com/problems/permutation-sequence/)
 
-经典的猜数字游戏。
+给出1~n的全排列数字，让求出在全排列的所有方式中第k个排列什么。
 
-假设你正在玩猜数字游戏（Bulls and Cows）：你写出4个数字让你的朋友猜，每次你的朋友猜一个数字，你给出一条线索，这个线索告诉你的朋友，有多少个数字位置是正确的（被称为Bulls），有多少个数字位置是不正确的（被称为Cows），你的朋友需要根据这些线索最终猜出正确的数字。
-
-例如，给出的数字是1807，你的朋友猜的是7810，这里用A代表Bulls，B代表Cows，则给出的线索是1A3B。
-
-题目中给出的secret（被猜测数字）和guess（猜测的数字）长度一定是一样的。
-
-个人思路：要注意一个问题，就是出现数字出现的总个数统计。这是一个坑，其他没有别的，注意写代码就可以。
-
-ps. 虽然A掉了，但是觉得这次代码很丑。
+自己按照组合数的方式推了一下，最后发现按每一位(n - x)!来逆推即可。其实，这种全排列背景的算法叫[康托展开(https://zh.wikipedia.org/zh/%E5%BA%B7%E6%89%98%E5%B1%95%E5%BC%80)。
 
 ```cpp
 class Solution {
 public:
-    int num[20];
-    bool vis[1000001];
-    string getHint(string secret, string guess) {
-        memset(num, 0, sizeof(num));
-        memset(vis, 0, sizeof (vis));
-        for (int i = 0; i < secret.size(); ++ i) {
-            num[secret[i] - '0'] ++;
+    string getPermutation(int n, int k) {
+        vector<int> v;
+        int cnt = 1;
+        for (int i = 0; i < n; ++ i) {
+            v.push_back(i + 1);
+            cnt = cnt * (i + 1);
         }
-        int A = 0, B = 0;
-        for (int i = 0; i < guess.size(); ++ i) {
-            if (secret[i] == guess[i]) {
-                A ++;
-                num[guess[i] - '0'] --;
-                vis[i] = 1;
-            }
+        k = k - 1;
+        string ans = "";
+        for (int i = 0; i < n; ++ i) {
+            cnt = cnt / (n - i);
+            int ind = k / cnt;
+            ans += std :: to_string(v[ind]);
+            v.erase(v.begin() + ind);
+            k %= cnt;
         }
-
-        for (int i = 0; i < guess.size(); ++ i) {
-            if (vis[i]) continue;
-            if (num[guess[i] - '0'] > 0) {
-                B ++;
-                num[guess[i] - '0'] --;
-            }
-        }
-        string As = std :: to_string(A);
-        string Bs = std :: to_string(B);
-
-        return As + 'A' + Bs + 'B';
+        return ans;
     }
 };
 ```
