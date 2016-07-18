@@ -3,36 +3,31 @@
 ---
 
 
-## 2016-07-16
+## 2016-07-19
 
 ### Today's leetcode
 
-[60. Permutation Sequence](https://leetcode.com/problems/permutation-sequence/)
+[48. Rotate Image](https://leetcode.com/problems/rotate-image/)
 
-给出1~n的全排列数字，让求出在全排列的所有方式中第k个排列什么。
+题意很简单，90°旋转一个矩阵。采用先上下翻转，再按左对角线变换即可。
 
-自己按照组合数的方式推了一下，最后发现按每一位(n - x)!来逆推即可。其实，这种全排列背景的算法叫[康托展开(https://zh.wikipedia.org/zh/%E5%BA%B7%E6%89%98%E5%B1%95%E5%BC%80)。
+```bash
+1 2 3     7 8 9     7 4 1
+4 5 6  => 4 5 6  => 8 5 2
+7 8 9     1 2 3     9 6 3
+```
 
+个人作答：
 ```cpp
 class Solution {
 public:
-    string getPermutation(int n, int k) {
-        vector<int> v;
-        int cnt = 1;
-        for (int i = 0; i < n; ++ i) {
-            v.push_back(i + 1);
-            cnt = cnt * (i + 1);
+    void rotate(vector<vector<int>>& matrix) {
+        reverse(matrix.begin(), matrix.end());
+        for (int i = 0; i < matrix.size(); ++ i) {
+            for (int j  = 0; j < i; ++ j) {
+                swap(matrix[i][j], matrix[j][i]);
+            }
         }
-        k = k - 1;
-        string ans = "";
-        for (int i = 0; i < n; ++ i) {
-            cnt = cnt / (n - i);
-            int ind = k / cnt;
-            ans += std :: to_string(v[ind]);
-            v.erase(v.begin() + ind);
-            k %= cnt;
-        }
-        return ans;
     }
 };
 ```
