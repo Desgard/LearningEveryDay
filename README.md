@@ -9,9 +9,9 @@
 
 [347. Top K Frequent Elements](https://leetcode.com/problems/top-k-frequent-elements/)
 
-题意，给一个数组，返回出现次数最多的k歌元素。
+题意，给一个数组，返回出现次数最多的k个元素。
 
-思路：先扫一遍数组得出每个数的次数。然后建个堆就好了，插入操作为O(log(k))。这里我用的stl的优先队列，最后再做一次判断即可。当然写个二叉堆也用不了几行。
+思路：先扫一遍数组得出每个数的次数。然后建个堆就好了，插入操作为O(log(k))。这里我用的stl的优先队列，最后再做一次判断即可。当然写个二叉堆也用不了几行。最终复杂度O(nlogk)
 
 ```c++
 typedef pair<int, int> P;
