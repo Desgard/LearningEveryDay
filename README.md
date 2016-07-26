@@ -3,59 +3,40 @@
 ---
 
 
-## 2016-07-25
+## 2016-07-26
 
 ### Today's leetcode
 
-[347. Top K Frequent Elements](https://leetcode.com/problems/top-k-frequent-elements/)
+[25. Reverse Nodes in k-Group](https://leetcode.com/problems/reverse-nodes-in-k-group/)
 
-题意，给一个数组，返回出现次数最多的k个元素。
+题意，一个链表，从表头到表末每k个值进行翻转，如果不够k个数就不翻转。
 
-思路：先扫一遍数组得出每个数的次数。然后建个堆就好了，插入操作为O(log(k))。这里我用的stl的优先队列，最后再做一次判断即可。当然写个二叉堆也用不了几行。最终复杂度O(nlogk)
+明明写着**hard**，但是好水啊。。扫k个做个翻转，然后做个递归，over。
 
 ```c++
-typedef pair<int, int> P;
 class Solution {
 public:
-	vector<int> topKFrequent(vector<int>& nums, int k) {
-		unordered_map<int, int> cnt;
-		for (int i = 0; i < nums.size(); ++ i) {
-		    cnt[nums[i]] ++;
-		}
-		priority_queue<pair<int, int>, vector<pair<int, int> >, greater<pair<int, int> > > q;
-		for (auto &x : cnt) {
-			if (q.size() < k)
-				q.push(make_pair(x.second, x.first));
-			else {
-				if (q.top().first < x.second) {
-					q.pop();
-					q.push(make_pair(x.second, x.first));
-				}
-			}
-		}
-		vector<int> ans;
-		while (!q.empty()) {
-			ans.push_back(q.top().second);
-			q.pop();
-		}
-		return ans;
-	}
+    ListNode* reverseKGroup(ListNode* head, int k) {
+        auto node = head;
+        for (int i = 0; i < k; ++ i)  {
+            if (!node) return head;
+            node = node -> next;
+        }
+        
+        auto ahead = reverse(head, node);
+        head -> next = reverseKGroup(node, k);
+        return ahead;
+    }
+    
+    ListNode* reverse(ListNode* st, ListNode* ed) {
+        auto head = ed;
+        while (st != ed) {
+            auto tmp = st -> next;
+            st -> next = head;
+            head = st;
+            st = tmp;
+        }
+        return head;
+    }
 };
-```
-
-最近再写python，用python再写一版吧。查完heap的api后，发现姿势好美。
-
-```python
-class Solution(object):
-    def topKFrequent(self, nums, k):
-        cnts = collections.Counter(nums)
-        heap = []
-        for kk, cnt in cnts.items():
-            if len(heap) < k:
-                heapq.heappush(heap, (cnt, kk))
-            else:
-                if heap[0][0] < cnt:
-                    heapq.heappop(heap)
-                    heapq.heappush(heap, (cnt, kk))
-        return [x[1] for x in heap]
 ```
