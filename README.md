@@ -3,40 +3,31 @@
 ---
 
 
-## 2016-07-26
+## 2016-07-27
 
 ### Today's leetcode
 
-[25. Reverse Nodes in k-Group](https://leetcode.com/problems/reverse-nodes-in-k-group/)
+[338. Counting Bits](https://leetcode.com/problems/counting-bits/)
 
-题意，一个链表，从表头到表末每k个值进行翻转，如果不够k个数就不翻转。
+题意，搜出小于等于num所有数的1的个数。
 
-明明写着**hard**，但是好水啊。。扫k个做个翻转，然后做个递归，over。
+第一反应，一维分组dp。从1开始将数分为左len - 1位，右边分为1位。我们可以左len - 1位在开始的时候是0，所以它之后的位数再后都可以通过前面的计数来得到。
+
+> dp[i] = dp[i >> 1] + (i) & 1;
 
 ```c++
 class Solution {
 public:
-    ListNode* reverseKGroup(ListNode* head, int k) {
-        auto node = head;
-        for (int i = 0; i < k; ++ i)  {
-            if (!node) return head;
-            node = node -> next;
-        }
+    vector<int> countBits(int num) {
+        vector<int> res;
+        res.push_back(0);
         
-        auto ahead = reverse(head, node);
-        head -> next = reverseKGroup(node, k);
-        return ahead;
-    }
-    
-    ListNode* reverse(ListNode* st, ListNode* ed) {
-        auto head = ed;
-        while (st != ed) {
-            auto tmp = st -> next;
-            st -> next = head;
-            head = st;
-            st = tmp;
+        for (int i = 1; i <= num; ++ i) {
+            int x = i & 1;
+            int y = i >> 1;
+            res.push_back(res[y] + x);
         }
-        return head;
+        return res;
     }
 };
 ```
