@@ -3,31 +3,59 @@
 ---
 
 
-## 2016-07-27
+## 2016-07-28
 
 ### Today's leetcode
 
-[338. Counting Bits](https://leetcode.com/problems/counting-bits/)
+[229. Majority Element II](https://leetcode.com/problems/majority-element-ii/)
 
-题意，搜出小于等于num所有数的1的个数。
+这题是我接触的新的类型，需要运用**多数投票算法（Majority Vote Algorithm）**。其实可以根据*统计超过一半数字问题*迁移过来。在统计超过一半数字问题中，我的思路是利用歌巢原理来进行计数计算，其实对于长度为`len`的数组来说，如果想找出`len / n`的数字，我们可以存`n - 1`个数来统计出现频率。
 
-第一反应，一维分组dp。从1开始将数分为左len - 1位，右边分为1位。我们可以左len - 1位在开始的时候是0，所以它之后的位数再后都可以通过前面的计数来得到。
+逆推一下，`(n - 1) * len / n < len`，而`n * len / n = len`。所以我们对其向下取整，可以判断出数量最多为`n - 1`个。
 
-> dp[i] = dp[i >> 1] + (i) & 1;
+具体可以见[这里](http://www.cs.utexas.edu/users/moore/best-ideas/mjrty/index.html)。
+
+> **A Linear Time Majority Vote Algorithm**
+
+> This algorithm, which Bob Boyer and I invented in 1980 decides which element of a sequence is in the majority, provided there is such an element. 
+
+
 
 ```c++
 class Solution {
 public:
-    vector<int> countBits(int num) {
+    vector<int> majorityElement(vector<int>& nums) {
         vector<int> res;
-        res.push_back(0);
-        
-        for (int i = 1; i <= num; ++ i) {
-            int x = i & 1;
-            int y = i >> 1;
-            res.push_back(res[y] + x);
+        if (nums.size() == 0) return res;
+        int num1, num2, cnt1, cnt2;
+        num1 = num2 = cnt1 = cnt2 = 0;
+        for (int i = 0; i < nums.size(); ++ i) {
+            if (num1 == nums[i]) cnt1 ++;
+            else if (num2 == nums[i]) cnt2 ++;
+            else if (cnt1 == 0) {
+                cnt1 = 1; 
+                num1 = nums[i];
+            } 
+            else if (cnt2 == 0) {
+                cnt2 = 1;
+                num2 = nums[i];
+            }
+            else {
+                cnt1 --;
+                cnt2 --;
+            }
         }
+        cnt1 = cnt2 = 0;
+        for (int i = 0; i < nums.size(); ++ i) {
+            if (nums[i] == num1) cnt1 ++;
+            if (nums[i] == num2) cnt2 ++;
+        }
+        
+        if (cnt1 > nums.size() / 3) res.push_back(num1);
+        if (cnt2 > nums.size() / 3 && num1 != num2) res.push_back(num2);
         return res;
     }
 };
 ```
+
+
