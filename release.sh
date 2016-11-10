@@ -4,5 +4,5 @@ echo "Releasing! Now!"
 
 git add .
 git status
-git commit -m '$1'
+git commit -m 'Update Practice'
 git push origin gh-pages
